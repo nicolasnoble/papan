@@ -7,6 +7,7 @@
   max-width: 500px;
   min-height: 64px;
 }
+
 .profilearea iron-image {
   width: 64px;
   height: 64px;
@@ -14,6 +15,7 @@
   border-radius: 50%;
   float: right;
 }
+
 .profiletitle {
   font-size: 12pt;
   font-weight: bold;
@@ -22,12 +24,15 @@
   padding-bottom: 5px;
   border-bottom: 1px solid lightgrey;
 }
+
 .providercard {
   max-width: 128px;
 }
+
 paper-card paper-button {
   font-size: 8pt;
 }
+
 .loginbutton {
   background-repeat: no-repeat;
   background-position: 5px 5px;
@@ -36,16 +41,19 @@ paper-card paper-button {
   background-color: #444;
   max-height: 35px;
 }
-.loginbutton:before {
+
+.loginbutton::before {
   content: "Sign in with";
   margin-left: 30px;
   margin-right: 5px;
 }
+
 .loginbutton a {
   text-decoration: none;
   color: inherit;
 }
-.loginbutton a:first-letter {
+
+.loginbutton a::first-letter {
   text-transform: uppercase;
 }
 

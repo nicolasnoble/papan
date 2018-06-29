@@ -8,6 +8,7 @@
   display: block;
   height: 200px;
   width: 100%;
+
   --iron-image-width: 100%;
 }
 
@@ -40,5 +41,5 @@ a {
 }
 
 a :hover {
-  color: #555599;
+  color: #559;
 }

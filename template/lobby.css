@@ -8,6 +8,7 @@
   display: block;
   height: 130px;
   width: 100%;
+
   --iron-image-width: 100%;
 }
 
@@ -29,7 +30,7 @@
 }
 
 #main-view {
-  background-color:#cccccc;
+  background-color:#ccc;
 }
 
 papan-chat {
