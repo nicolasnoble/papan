@@ -10,10 +10,11 @@
     "start-headless": "node .",
     "lint": "standard **/*.js **/*.html | snazzy",
     "polymer_lint": "node ./node_modules/polymer-cli/bin/polymer.js lint",
+    "stylelint": "stylelint 'template/**/*.css' 'template/**/*.html'",
     "node_test": "mocha test/common test/nodejs --exit -r test/utils/coverage.js --reporter mocha-multi-reporters --reporter-options configFile=config-nodejs.json",
     "nyc_instrument": "rimraf instrumented && nyc instrument src instrumented --produce-source-map",
     "electron_test": "electron-mocha test/common test/electron --exit -r test/utils/coverage.js --reporter mocha-multi-reporters --reporter-options configFile=config-electron.json",
-    "test": "rimraf .nyc_output && npm run nyc_instrument && npm run node_test && npm run electron_test && npm run lint && npm run polymer_lint",
+    "test": "rimraf .nyc_output && npm run nyc_instrument && npm run node_test && npm run electron_test && npm run lint && npm run polymer_lint && npm run stylelint",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "reports": "npm test && nyc report --reporter=html && opn ./coverage/index.html && opn ./node-report.html && opn ./electron-report.html",
     "postinstall": "bower install && bower prune && node ./post-install-patch.js",
@@ -58,7 +59,9 @@
     "polymer-cli": "^1.6.0",
     "rimraf": "^2.6.2",
     "snazzy": "^7.1.1",
-    "standard": "^11.0.1"
+    "standard": "^11.0.1",
+    "stylelint": "^9.3.0",
+    "stylelint-config-standard": "^18.2.0"
   },
   "dependencies": {
     "@babel/preset-env-standalone": "^7.0.0-beta.46",
