@@ -1,9 +1,9 @@
-#chat{
+#chat {
   height: 100%;
   border-left: 1px solid darkgray;
 }
 
-#chattext{
+#chattext {
   padding: 2px;
   border-bottom: 1px solid darkgray;
   overflow-x: hidden;
@@ -11,12 +11,12 @@
   word-wrap: break-word;
 }
 
-.chatusername{
+.chatusername {
   width: 100px;
   font-weight: 500;
   padding-right: 2px;
 }
 
-paper-input{
+paper-input {
   padding: 2px;
 }

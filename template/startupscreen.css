@@ -1,4 +1,4 @@
-#header{
+#header {
   font-size: 50pt;
   font-variant: small-caps;
   height: 200px;
@@ -7,7 +7,7 @@
   background-color: lightskyblue;
 }
 
-#menulist{
+#menulist {
   margin: auto;
   text-align: center;
 }
@@ -17,7 +17,7 @@ ul {
   padding: 0;
 }
 
-.menubutton{
+.menubutton {
   width: 400px;
   margin: 20px;
 }

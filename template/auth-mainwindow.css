@@ -22,12 +22,12 @@ app-header paper-icon-button {
 
 app-header a {
   color: white;
-  text-decoration: none
+  text-decoration: none;
 }
 
 app-header a:hover {
   color: lightgrey;
-  text-decoration: none
+  text-decoration: none;
 }
 
 app-drawer {
