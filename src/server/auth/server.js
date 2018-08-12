@@ -140,7 +140,7 @@ exports.registerServer = (app, config) => {
         res.type('crt')
         res.send(caCrtBuffer)
       } else {
-        res.sendFile(path.join(root, 'certs', 'ca.crt')
+        res.sendFile(path.join(root, 'certs', 'ca.crt'))
       }
     })
 
