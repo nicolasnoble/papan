@@ -99,7 +99,7 @@ exports.registerServer = (app, config) => {
 
     // Static files
     function sendRoot (res) {
-      res.sendFile(path.join(root, 'render/auth-index.html'))
+      res.sendFile(path.join(root, 'render', 'auth-index.html'))
     }
     app.use('/src/common', express.static(path.join(root, 'src', 'common')))
     app.use('/src/client/auth', express.static(path.join(root, 'src', 'client', 'auth')))
@@ -111,6 +111,7 @@ exports.registerServer = (app, config) => {
     app.get('/render/main', (req, res) => sendRoot(res))
     app.get('/render/login', (req, res) => sendRoot(res))
     app.get('/render/profile', (req, res) => sendRoot(res))
+    app.get('/certs/ca.crt', (req, res) => res.sendFile(path.join(root, 'certs', 'ca.crt'))
 
     // AJAX
     app.get('/profile/data', (req, res) => res.json(
