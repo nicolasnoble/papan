@@ -21,9 +21,9 @@ exports.registerServer = options => {
   options = _.defaults(options, serverDefaults)
 
   const work = [
-    PapanServerUtils.readFile(path.join(__dirname, '..', '..', '..', 'certs', 'localhost-ca.crt')),
-    PapanServerUtils.readFile(path.join(__dirname, '..', '..', '..', 'certs', 'localhost-server.crt')),
-    PapanServerUtils.readFile(path.join(__dirname, '..', '..', '..', 'certs', 'localhost-server.key')),
+    PapanServerUtils.readFile(path.join(__dirname, '..', '..', '..', 'certs', 'ca.crt')),
+    PapanServerUtils.readFile(path.join(__dirname, '..', '..', '..', 'certs', 'noauth-server.crt')),
+    PapanServerUtils.readFile(path.join(__dirname, '..', '..', '..', 'certs', 'noauth-server.key')),
     protoLoader.load('lobby.proto')
   ]
 

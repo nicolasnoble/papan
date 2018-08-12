@@ -151,7 +151,7 @@ exports.createClient = (gamesList, options) => {
   const serverAddress = options.lobbyServer + ':' + options.lobbyServerPort
 
   const work = [
-    PapanServerUtils.readFile(path.join(__dirname, '..', '..', '..', 'certs', 'localhost-ca.crt')),
+    PapanServerUtils.readFile(path.join(__dirname, '..', '..', '..', 'certs', 'ca.crt')),
     protoLoader.load('lobby.proto')
   ]
 

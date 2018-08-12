@@ -210,7 +210,7 @@ exports.createClient = (clientInterface, options) => {
   clientInterface.setLobbyConnectionStatus('CONNECTING')
 
   const work = [
-    PapanServerUtils.readFile(path.join(__dirname, '..', '..', '..', 'certs', 'localhost-ca.crt')),
+    PapanServerUtils.readFile(path.join(__dirname, '..', '..', '..', 'certs', 'ca.crt')),
     protoLoader.load('lobby.proto')
   ]
 
