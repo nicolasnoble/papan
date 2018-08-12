@@ -84,6 +84,7 @@
     "ip": "^1.1.5",
     "lodash": "^4.17.5",
     "nat-upnp": "^1.1.1",
+    "node-forge": "^0.7.5",
     "openid-client": "^2.0.0",
     "passport": "^0.4.0",
     "passport-facebook": "^2.1.1",

@@ -10,6 +10,9 @@ const session = require('express-session')
 const pg = require('pg')
 const PGSession = require('connect-pg-simple')(session)
 const assert = require('assert')
+const forge = require('node-forge')
+const pki = forge.pki
+const crypto = require('crypto')
 
 const passport = require('passport')
 
@@ -42,6 +45,9 @@ exports.registerServer = (app, config) => {
   let authentications = []
   let users
   let registerProvider
+  let caKey = null
+  let caCrtBuffer = null
+  let caStore = pki.createCaStore()
 
   if (!config) config = {}
   if (!config.pgConfig) config.pgConfig = {}
@@ -50,6 +56,24 @@ exports.registerServer = (app, config) => {
   config.pgConfig.host = config.pgConfig.host || env.PGHOST
   config.pgConfig.port = config.pgConfig.port || env.PGPORT
   config.pgConfig.database = config.pgConfig.database || env.PGDATABASE
+
+  if (config.caCrt) {
+    const caCrt = pki.certificateFromPem(config.caCrt)
+    do {
+      if (!caCrt) break
+      const basicConstraints = caCrt.getExtension('basicConstraints')
+      if (!basicConstraints || !basicConstraints.cA) break
+      const subject = caCrt.subject
+      const O = subject.getField('O')
+      if (!O || O.value !== 'Papan') break
+      caStore.addCertificate(caCrt)
+      caCrtBuffer = config.caCrt
+    } while (false)
+  }
+
+  if (config.caKey && caCrtBuffer) {
+    caKey = pki.privateKeyFromPem(config.caKey)
+  }
 
   return Promise.resolve(userDB.create(config.pgConfig)).then(createdUsers => {
     // We need to create and migrate the database first thing before going on with the rest of the work.
@@ -111,7 +135,14 @@ exports.registerServer = (app, config) => {
     app.get('/render/main', (req, res) => sendRoot(res))
     app.get('/render/login', (req, res) => sendRoot(res))
     app.get('/render/profile', (req, res) => sendRoot(res))
-    app.get('/certs/ca.crt', (req, res) => res.sendFile(path.join(root, 'certs', 'ca.crt'))
+    app.get('/certs/ca.crt', (req, res) => {
+      if (caCrtBuffer) {
+        res.type('crt')
+        res.send(caCrtBuffer)
+      } else {
+        res.sendFile(path.join(root, 'certs', 'ca.crt')
+      }
+    })
 
     // AJAX
     app.get('/profile/data', (req, res) => res.json(
@@ -151,6 +182,59 @@ exports.registerServer = (app, config) => {
     app.get('/info', (req, res) => res.json({
       authenticated: req.isAuthenticated()
     }))
+    app.post('/certs/sign', (req, res) => {
+      const csrString = req.body.csr
+      let error = null
+      do {
+        if (!csrString) {
+          error = 'No CSR sent'
+          break
+        }
+        const csr = pki.certificationRequestFromPem(csrString)
+        if (!csr) {
+          error = 'Unable to parse CSR'
+          break
+        }
+        const subject = csr.subject
+        const CN = subject.getField('CN')
+        const O = subject.getField('O')
+        const OU = subject.getField('OU')
+        if (!CN || CN.value !== 'localhost') {
+          error = 'Invalid CN field in CSR'
+          break
+        }
+        if (!O || O.value !== 'Papan') {
+          error = 'Invalid O field in CSR'
+          break
+        }
+        if (!OU || OU.value !== 'Server-Ad-Hoc') {
+          error = 'Invalid OU field in CSR'
+          break
+        }
+        if (!csr.verify()) {
+          error = 'Couldn\'t verify CSR'
+        }
+        const cert = pki.createCertificate()
+        const now = new Date()
+        cert.validity.notBefore = now
+        cert.validity.notAfter.setTime(now.getTime() + 5 * 24 * 60 * 60 * 1000)
+        cert.setSubject(csr.subject.attributes)
+        cert.setIssuer(caCrt.subject.attributes)
+        cert.publicKey = csr.publicKey
+        crypto.randomBytes(20, (err, buffer) => {
+          if (buffer[0] > 127) {
+            buffer[0] -= 128
+          }
+          cert.serialnumber = [...buffer].map(b => b.toString(16)).join('')
+          cert.sign(caKey)
+          res.json({ cert: pki.certificateToPem(cert) })
+        })
+      } while (false)
+      if (error) {
+        res.status(400)
+        res.json({ error: error })
+      }
+    })
 
     // Auth providers logic
     registerProvider = (provider) => {
