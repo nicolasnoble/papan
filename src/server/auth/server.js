@@ -228,7 +228,7 @@ exports.registerServer = (app, config) => {
           if (buffer[0] > 127) {
             buffer[0] -= 128
           }
-          cert.serialnumber = [...buffer].map(b => b.toString(16)).join('')
+          cert.serialNumber = [...buffer].map(b => b.toString(16)).join('')
           cert.sign(caKey)
           res.json({ cert: pki.certificateToPem(cert) })
         })
