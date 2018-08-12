@@ -48,6 +48,7 @@ exports.registerServer = (app, config) => {
   let registerProvider
   let caKey = null
   let caCrtBuffer = null
+  let caCrtSubject = null
   let caStore = pki.createCaStore()
 
   if (!config) config = {}
@@ -69,6 +70,7 @@ exports.registerServer = (app, config) => {
       if (!O || O.value !== 'Papan') break
       caStore.addCertificate(caCrt)
       caCrtBuffer = config.caCrt
+      caCrtSubject = caCrt.subject
     } while (false)
   }
 
@@ -220,7 +222,7 @@ exports.registerServer = (app, config) => {
         cert.validity.notBefore = now
         cert.validity.notAfter.setTime(now.getTime() + 5 * 24 * 60 * 60 * 1000)
         cert.setSubject(csr.subject.attributes)
-        cert.setIssuer(caCrt.subject.attributes)
+        cert.setIssuer(caCrtSubject.attributes)
         cert.publicKey = csr.publicKey
         crypto.randomBytes(20, (err, buffer) => {
           if (buffer[0] > 127) {
