@@ -13,6 +13,7 @@ const assert = require('assert')
 const forge = require('node-forge')
 const pki = forge.pki
 const crypto = require('crypto')
+const serializeError = require('serialize-error')
 
 const passport = require('passport')
 
@@ -302,7 +303,7 @@ exports.registerServer = (app, config) => {
 
     // And finally, catch-all error 500, for future expansion.
     app.use((err, req, res, next) => {
-      res.status(500).send(err)
+      res.status(500).send(serializeError(err))
     })
 
     resolve()
