@@ -185,7 +185,7 @@ exports.registerServer = (app, config) => {
     app.get('/info', (req, res) => res.json({
       authenticated: req.isAuthenticated()
     }))
-    app.post('/certs/sign', (req, res) => {
+    app.post('/certs/csr-sign', (req, res) => {
       const csrString = req.body.csr
       let error = null
       do {
