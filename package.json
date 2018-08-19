@@ -18,7 +18,7 @@
     "codecov": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "reports": "npm test && nyc report --reporter=html && opn ./coverage/index.html && opn ./node-report.html && opn ./electron-report.html",
     "postinstall": "bower install && bower prune && node ./post-install-patch.js",
-    "electron_rebuild": "npm rebuild --runtime=electron --target=2.0.7 --dist-url=https://atom.io/download/electron",
+    "electron_rebuild": "npm rebuild --runtime=electron --target=1.8.4 --dist-url=https://atom.io/download/electron",
     "build": "electron-packager . --all --out=out"
   },
   "standard": {
@@ -47,7 +47,7 @@
     "coveralls": "^3.0.2",
     "devtron": "^1.4.0",
     "dirty-chai": "^2.0.1",
-    "electron": "~2.0.7",
+    "electron": "~1.8.4",
     "electron-mocha": "^6.0.4",
     "electron-packager": "^12.1.1",
     "eslint-plugin-html": "^4.0.5",
